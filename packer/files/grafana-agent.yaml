@@ -1,0 +1,32 @@
+server:
+  log_level: info
+
+metrics:
+  global:
+    scrape_interval: 1m
+    scrape_timeout: 1m
+    remote_write:
+      #- url: http://mimir:9009/api/v1/push
+  configs:
+    - name: default
+      scrape_configs:
+        - job_name: agent
+          static_configs:
+            - targets: ['localhost:9090']
+
+logs:
+  configs:
+  - name: default
+    positions:
+      filename: /tmp/positions.yaml
+    scrape_configs:
+      - job_name: metrics-scrape
+        docker_sd_configs:
+          - host: unix:///var/run/docker.sock
+            refresh_interval: 5s
+        relabel_configs:
+          - source_labels: ['__meta_docker_container_name']
+            regex: '/(.*)'
+            target_label: 'container'
+    clients:
+      #- url: http://loki:3100/loki/api/v1/push
