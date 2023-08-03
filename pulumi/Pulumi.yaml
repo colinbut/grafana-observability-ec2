@@ -1,0 +1,6 @@
+name: grafana
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Grafana Observability Stack

@@ -1,0 +1,5 @@
+# Pulumi
+
+```bash
+pulumi up
+```
